@@ -1,11 +1,10 @@
-// index.js
-import TelegramBot from 'node-telegram-bot-api';
-import dotenv from 'dotenv';
-dotenv.config();
+// index.js (versión CommonJS)
+require('dotenv').config();
+const TelegramBot = require('node-telegram-bot-api');
 
 const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
 
-const participantes = new Set(); // Memoria temporal. Luego podemos conectar a BD
+const participantes = new Set();
 
 // /start - Mensaje de bienvenida
 bot.onText(/\/start/, (msg) => {
@@ -16,13 +15,13 @@ Usa /apuntar para participar en la próxima jugada.
 Usa /ayuda para ver todos los comandos.`, { parse_mode: "Markdown" });
 });
 
-// /apuntar - Añade usuario a la lista
+// /apuntar - Añade usuario
 bot.onText(/\/apuntar/, (msg) => {
   participantes.add(msg.from.username || msg.from.first_name);
   bot.sendMessage(msg.chat.id, `✅ ${msg.from.first_name}, te hemos apuntado para la próxima jugada.`);
 });
 
-// /baja - Quita usuario de la lista
+// /baja - Elimina usuario
 bot.onText(/\/baja/, (msg) => {
   participantes.delete(msg.from.username || msg.from.first_name);
   bot.sendMessage(msg.chat.id, `🗑️ ${msg.from.first_name}, has sido dado de baja de la jugada.`);
@@ -37,17 +36,17 @@ bot.onText(/\/participantes/, (msg) => {
   }
 });
 
-// /combinacion - Combinación del día (puede conectarse a análisis)
+// /combinacion - Muestra combinación del día
 bot.onText(/\/combinacion/, (msg) => {
   bot.sendMessage(msg.chat.id, `🎰 Combinación generada por IA para hoy:\n\n12 - 23 - 34 - 36 - 44 - 49`);
 });
 
-// /resultados - Enlace a resultados oficiales
+// /resultados - Enlace a resultados
 bot.onText(/\/resultados/, (msg) => {
   bot.sendMessage(msg.chat.id, `📊 Consulta los últimos resultados oficiales de la Bonoloto aquí:\nhttps://www.loteriasyapuestas.es/es/bonoloto`);
 });
 
-// /ayuda - Muestra menú de comandos
+// /ayuda - Comandos
 bot.onText(/\/ayuda/, (msg) => {
   bot.sendMessage(msg.chat.id, `📋 *Comandos disponibles*:
 
