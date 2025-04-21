@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Bot de Telegram para la peña loterIA",
   "main": "index.js",
-  "type": "commonjs",
-  "scripts": {
+   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
