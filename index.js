@@ -60,4 +60,3 @@ bot.onText(/\/ayuda/, (msg) => {
 
 ¡Gracias por usar *loterIA*! 🤖`, { parse_mode: "Markdown" });
 });
-
