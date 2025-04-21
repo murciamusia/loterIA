@@ -132,9 +132,10 @@ bot.onText(/\/confirmar_pago (.+)/, async (msg, match) => {
       [telegram_id, nombre, username, 5.00]
     );
 
-    bot.sendMessage(msg.chat.id, `✅ Pago confirmado para *${nombre}* (@${username || 'sin usuario'})`, {
-      parse_mode: "Markdown"
-    });
+   bot.sendMessage(msg.chat.id, `✅ Pago confirmado para *${nombre}* (@${username || "sin usuario"})`, {
+  parse_mode: "Markdown"
+});
+
   } catch (err) {
     console.error("Error registrando pago:", err);
     bot.sendMessage(msg.chat.id, "⚠️ Ocurrió un error al registrar el pago.");
