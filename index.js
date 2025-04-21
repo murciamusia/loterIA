@@ -4,49 +4,54 @@ const TelegramBot = require('node-telegram-bot-api');
 
 const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
 
-const participantes = new Set();
+const participantes = new Map();
 
 // /start - Mensaje de bienvenida
 bot.onText(/\/start/, (msg) => {
-  bot.sendMessage(msg.chat.id, `👋 ¡Bienvenido a *loterIA* – Apuestas estadísticas por IA! 
-
-Usa /apuntar para participar en la próxima jugada.
-
-Usa /ayuda para ver todos los comandos.`, { parse_mode: "Markdown" });
+  bot.sendMessage(
+    msg.chat.id,
+    `¡Hola ${msg.from.first_name}! 👋\n\nUsa /apuntar para participar en la próxima jugada.\nUsa /ayuda para ver todos los comandos.`,
+    { parse_mode: "Markdown" }
+  );
 });
 
-bot.onText(/\/apuntar/, async (msg) => {
-  const chatId = msg.chat.id;
+bot.onText(/\/apuntar/, (msg) => {
   const userId = msg.from.id;
-  const nombre = msg.from.first_name;
-  const username = msg.from.username;
-
-  try {
-    const res = await pool.query(
-      'INSERT INTO usuarios (telegram_id, nombre, username) VALUES ($1, $2, $3) ON CONFLICT (telegram_id) DO NOTHING',
-      [userId, nombre, username]
-    );
-    bot.sendMessage(chatId, `🎉 ¡${nombre}, ya estás apuntado a la peña!`);
-  } catch (err) {
-    console.error(err);
-    bot.sendMessage(chatId, '❌ Ha ocurrido un error al registrarte.');
+  if (participantes.has(userId)) {
+    bot.sendMessage(msg.chat.id, 'Ya estás apuntado.');
+  } else {
+    participantes.set(userId, {
+      nombre: msg.from.first_name,
+      username: msg.from.username || '',
+    });
+    bot.sendMessage(msg.chat.id, '¡Te has apuntado con éxito!');
   }
 });
 
 
 // /baja - Elimina usuario
 bot.onText(/\/baja/, (msg) => {
-  participantes.delete(msg.from.username || msg.from.first_name);
-  bot.sendMessage(msg.chat.id, `🗑️ ${msg.from.first_name}, has sido dado de baja de la jugada.`);
+  const userId = msg.from.id;
+  if (participantes.has(userId)) {
+    participantes.delete(userId);
+    bot.sendMessage(msg.chat.id, 'Te has dado de baja.');
+  } else {
+    bot.sendMessage(msg.chat.id, 'No estabas apuntado.');
+  }
 });
 
-// /participantes - Muestra lista
+// Comando /participantes
 bot.onText(/\/participantes/, (msg) => {
   if (participantes.size === 0) {
-    bot.sendMessage(msg.chat.id, `📭 Aún no hay participantes.`);
-  } else {
-    bot.sendMessage(msg.chat.id, `👥 Participantes:\n\n${[...participantes].join('\n')}`);
+    bot.sendMessage(msg.chat.id, 'Aún no hay participantes.');
+    return;
   }
+
+  const lista = Array.from(participantes.values())
+    .map((p, i) => `${i + 1}. ${p.nombre} ${p.username ? `(@${p.username})` : ''}`)
+    .join('\n');
+
+  bot.sendMessage(msg.chat.id, `👥 Participantes:\n${lista}`);
 });
 
 // /combinacion - Muestra combinación del día
