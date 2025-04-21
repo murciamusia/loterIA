@@ -74,6 +74,7 @@ bot.onText(/\/ayuda/, (msg) => {
 /participantes - Ver quién está apuntado
 /combinacion - Ver la combinación del día
 /resultados - Ver últimos resultados
+/bases
 /ayuda - Este menú
 
 ¡Gracias por usar *loterIA*! 🤖`, { parse_mode: "Markdown" });
