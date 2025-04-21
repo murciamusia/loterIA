@@ -88,6 +88,44 @@ const pool = new Pool({
   }
 });
 
+// /bases - Reglas y condiciones de participación
+bot.onText(/\/bases/, (msg) => {
+  const texto = `📜 *Bases de Participación – Peña "loterIA"* 📜
+
+1. *Organización*
+- Peña sin ánimo de lucro gestionada por Juan Antonio García.
+- Objetivo: participar colectivamente en la Bonoloto usando combinaciones generadas por IA.
+
+2. *Cuota de participación*
+- 5€ por semana. Pago antes del *viernes a las 14:00h*.
+- Bizum al número: \`617988897\` con el concepto: *Tu nombre o usuario + fecha*.
+
+3. *Confirmación*
+- El administrador confirmará tu pago y te incluirá en el sorteo semanal.
+- Usa /pagos para ver quién ha pagado.
+
+4. *Combinaciones*
+- Generadas automáticamente con IA y publicadas en el grupo antes del sorteo.
+
+5. *Premios*
+- Se reparten proporcionalmente según la participación semanal.
+- Se abonan por Bizum tras confirmar el premio.
+
+6. *Transparencia*
+- Combinaciones y premios se comparten públicamente.
+- Puedes solicitar desglose de premios o aportaciones.
+
+7. *Renovación*
+- La participación es semanal. No hay compromiso de permanencia.
+
+8. *Cancelación*
+- Puedes salir con /baja o contactar con el administrador.
+
+¡Gracias por formar parte de *loterIA*! 🤖🍀`;
+
+  bot.sendMessage(msg.chat.id, texto, { parse_mode: "Markdown" });
+});
+
 bot.onText(/\/pago/, (msg) => {
   const mensaje = `💸 *Información de pago para participar en la peña "loterIA"* 💸
 
