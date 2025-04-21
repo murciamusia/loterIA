@@ -116,7 +116,7 @@ bot.onText(/\/pago/, (msg) => {
 
 // Comando separado: /confirmar_pago
 bot.onText(/\/confirmar_pago (.+)/, async (msg, match) => {
-  const adminId = 123456789; // ← tu ID real de Telegram aquí
+  const adminId = 2132105874; // ← tu ID real de Telegram aquí
 
   if (msg.from.id !== adminId) {
     return bot.sendMessage(msg.chat.id, "⛔ Solo el administrador puede registrar pagos.");
