@@ -146,3 +146,32 @@ bot.onText(/\/confirmar_pago (.+)/, async (msg, match) => {
 
   bot.sendMessage(msg.chat.id, mensaje, { parse_mode: "Markdown" });
 });
+
+bot.onText(/\/pagos/, async (msg) => {
+  try {
+    const result = await pool.query(`
+      SELECT nombre, username, fecha, cantidad
+      FROM pagos
+      WHERE DATE_TRUNC('week', fecha) = DATE_TRUNC('week', NOW())
+      ORDER BY fecha DESC
+    `);
+
+    if (result.rows.length === 0) {
+      return bot.sendMessage(msg.chat.id, "📭 Aún no hay pagos registrados esta semana.");
+    }
+
+    const lista = result.rows
+      .map((pago, i) => {
+        const fecha = new Date(pago.fecha).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' });
+        return `${i + 1}. ${pago.nombre} ${pago.username ? `(@${pago.username})` : ''} - ${pago.cantidad}€ (${fecha})`;
+      })
+      .join('\n');
+
+    bot.sendMessage(msg.chat.id, `💰 *Pagos confirmados esta semana:*\n\n${lista}`, {
+      parse_mode: "Markdown"
+    });
+  } catch (err) {
+    console.error("Error obteniendo pagos:", err);
+    bot.sendMessage(msg.chat.id, "⚠️ Ocurrió un error al consultar los pagos.");
+  }
+});
