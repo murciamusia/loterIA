@@ -2,8 +2,8 @@ const TelegramBot = require('node-telegram-bot-api');
 const fs = require('fs');
 
 // 🚨 REEMPLAZA estos valores
-const TOKEN = 'TU_BOT_TOKEN'; // <- Sustituye con tu token de BotFather
-const ADMIN_ID = TU_ID_TELEGRAM; // <- Sustituye con tu ID personal de Telegram (número)
+const TOKEN = '7386316601:AAFQqeUQe5613vT_fuB7REvvghOWMNhBNDI'; // <- Sustituye con tu token de BotFather
+const ADMIN_ID = 2132105874; // <- Sustituye con tu ID personal de Telegram (número)
 
 const bot = new TelegramBot(TOKEN, { polling: true });
 
