@@ -74,8 +74,7 @@ bot.onText(/\/ayuda/, (msg) => {
 ¡Gracias por usar *loterIA*! 🤖`, { parse_mode: "Markdown" });
 });
 
-import pkg from 'pg';
-const { Pool } = pkg;
+const { Pool } = require('pg');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL, // Añade esta variable en Render o Railway
