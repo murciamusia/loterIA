@@ -109,6 +109,39 @@ bot.onText(/\/pago/, (msg) => {
 
 📩 Dudas: contacta con administrador o usa /ayuda.
 
+bot.onText(/\/confirmar_pago (.+)/, async (msg, match) => {
+  const adminId = 123456789; // tu telegram ID
+  if (msg.from.id !== adminId) {
+    return bot.sendMessage(msg.chat.id, "⛔ Solo el administrador puede registrar pagos.");
+  }
+
+  const usernameOId = match[1].trim();
+  const participante = Array.from(participantes.entries()).find(([id, p]) => 
+    String(id) === usernameOId || p.username === usernameOId.replace('@', '')
+  );
+
+  if (!participante) {
+    return bot.sendMessage(msg.chat.id, "❌ Usuario no encontrado entre los participantes.");
+  }
+
+  const [telegram_id, { nombre, username }] = participante;
+
+  try {
+    await pool.query(
+      'INSERT INTO pagos (telegram_id, nombre, username, cantidad) VALUES ($1, $2, $3, $4)',
+      [telegram_id, nombre, username, 5.00]
+    );
+
+    bot.sendMessage(msg.chat.id, `✅ Pago confirmado para *${nombre}* (@${username || 'sin usuario'})`, {
+      parse_mode: "Markdown"
+    });
+  } catch (err) {
+    console.error("Error registrando pago:", err);
+    bot.sendMessage(msg.chat.id, "⚠️ Ocurrió un error al registrar el pago.");
+  }
+});
+
+
 ¡Gracias por confiar en *loterIA*! 🤖🍀`;
 
   bot.sendMessage(msg.chat.id, mensaje, { parse_mode: "Markdown" });
