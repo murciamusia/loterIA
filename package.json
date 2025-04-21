@@ -1,8 +1,9 @@
 {
   "name": "loteria-bot",
   "version": "1.0.0",
+  "description": "Bot de Telegram para la peña loterIA",
   "main": "index.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "start": "node index.js"
   },
