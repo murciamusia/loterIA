@@ -87,3 +87,29 @@ const pool = new Pool({
     rejectUnauthorized: false
   }
 });
+
+bot.onText(/\/pago/, (msg) => {
+  const mensaje = `💸 *Información de pago para participar en la peña "loterIA"* 💸
+
+📌 Para participar en la próxima jugada de Bonoloto gestionada por *loterIA*, es necesario realizar el pago antes del *viernes a las 14:00h*.
+
+✅ *Cuota por participante:*
+5€ por jugada semanal
+
+💳 *Métodos de pago:*
+1. *Bizum:* \`617988897\` (Juan Antonio García)
+   - Concepto: *Tu nombre o usuario de Telegram + fecha*
+
+✅ Una vez realizado el pago, se te confirmará la participación.
+
+🧾 *Transparencia:*
+- Las combinaciones jugadas se compartirán en el chat.
+- Los premios serán repartidos proporcionalmente.
+- Consulta la lista de participantes con /participantes
+
+📩 Dudas: contacta con administrador o usa /ayuda.
+
+¡Gracias por confiar en *loterIA*! 🤖🍀`;
+
+  bot.sendMessage(msg.chat.id, mensaje, { parse_mode: "Markdown" });
+});
