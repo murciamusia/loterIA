@@ -15,11 +15,24 @@ Usa /apuntar para participar en la próxima jugada.
 Usa /ayuda para ver todos los comandos.`, { parse_mode: "Markdown" });
 });
 
-// /apuntar - Añade usuario
-bot.onText(/\/apuntar/, (msg) => {
-  participantes.add(msg.from.username || msg.from.first_name);
-  bot.sendMessage(msg.chat.id, `✅ ${msg.from.first_name}, te hemos apuntado para la próxima jugada.`);
+bot.onText(/\/apuntar/, async (msg) => {
+  const chatId = msg.chat.id;
+  const userId = msg.from.id;
+  const nombre = msg.from.first_name;
+  const username = msg.from.username;
+
+  try {
+    const res = await pool.query(
+      'INSERT INTO usuarios (telegram_id, nombre, username) VALUES ($1, $2, $3) ON CONFLICT (telegram_id) DO NOTHING',
+      [userId, nombre, username]
+    );
+    bot.sendMessage(chatId, `🎉 ¡${nombre}, ya estás apuntado a la peña!`);
+  } catch (err) {
+    console.error(err);
+    bot.sendMessage(chatId, '❌ Ha ocurrido un error al registrarte.');
+  }
 });
+
 
 // /baja - Elimina usuario
 bot.onText(/\/baja/, (msg) => {
@@ -59,4 +72,14 @@ bot.onText(/\/ayuda/, (msg) => {
 /ayuda - Este menú
 
 ¡Gracias por usar *loterIA*! 🤖`, { parse_mode: "Markdown" });
+});
+
+import pkg from 'pg';
+const { Pool } = pkg;
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL, // Añade esta variable en Render o Railway
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
