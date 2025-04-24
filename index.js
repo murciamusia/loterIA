@@ -98,11 +98,12 @@ bot.onText(/\/bases/, (msg) => {
 - Objetivo: participar colectivamente en la Bonoloto usando combinaciones generadas por IA.
 
 2. *Cuota de participación*
-- 5€ por semana. Pago antes del *viernes a las 14:00h*.
-- Bizum al número: \`617988897\` con el concepto: *Tu nombre o usuario + fecha*.
+- 3€ cuota de alta en la peña o reactivación.
+- 5€ por semana para las apuestas. Pago antes del *viernes a las 14:00h* para las apuestas de la próxima semana.
+- Bizum al número: \`617988897\` con el concepto: *Tu nombre o @usuario + fecha de pago*.
 
 3. *Confirmación*
-- El administrador confirmará tu pago y te incluirá en el sorteo semanal.
+- El administrador confirmará tu pago y te incluirá en el sorteo semanal, confirmar participación con el comando /apuntar.
 - Usa /pagos para ver quién ha pagado.
 
 4. *Combinaciones*
@@ -110,7 +111,7 @@ bot.onText(/\/bases/, (msg) => {
 
 5. *Premios*
 - Se reparten proporcionalmente según la participación semanal.
-- Se abonan por Bizum tras confirmar el premio.
+- Se abonan por Bizum tras confirmar el premio *solo premios menores*.
 
 6. *Transparencia*
 - Combinaciones y premios se comparten públicamente.
